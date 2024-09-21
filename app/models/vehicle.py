@@ -1,15 +1,13 @@
-from pydantic import BaseModel, ConfigDict
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.sql import func
+from app.db.base_class import Base
 
-class VehicleBase(BaseModel):
-    name: str
-    brand: str
-    year: int
+class Vehicle(Base):
+    __tablename__ = "vehicles"
 
-class VehicleCreate(VehicleBase):
-    pass
-
-class Vehicle(VehicleBase):
-    id: int
-
-    class ConfigDict():
-        from_attributes = True
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True, nullable=False)
+    brand = Column(String, index=True, nullable=False)
+    year = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
