@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class VehicleBase(BaseModel):
     name: str
@@ -11,5 +11,5 @@ class VehicleCreate(VehicleBase):
 class Vehicle(VehicleBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    class ConfigDict():
+        from_attributes = True
