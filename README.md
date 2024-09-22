@@ -41,3 +41,11 @@ POST - /vehicles - Cria um novo veículo. A criação requer os campos seguintes
 GET - Lista os veículos. A listagem obedece uma regra de paginação de no máximo 50 veículos por requisição. O retorno com status 200 traz uma lista de no máximo 50 dicionários contendo, cada um, os seguintes campos: name, brand, year, id, created_at, updated_at.
 
 GET - /vehicles/{id} - Lista os detalhes de um veículo particular. É necessário passar o parâmetro id pelo método GET do protocolo HTTP. Serão retornados com status 200 os seguintes campos do veículo específico: name, brand, year, id, created_at, updated_at.
+
+
+# Pontos de Melhoria
+
+- Emular um banco de dados para testes (atualmente os testes rodam no mesmo banco de dados real da API)
+- Usar um linter
+- Usar atalhos para linhas de comandos (rodar aplicação, rodar testes)
+- Criar manifestos para deploy no Kubernetes
