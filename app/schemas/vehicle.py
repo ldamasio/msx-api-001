@@ -20,3 +20,7 @@ class VehicleRead(VehicleBase):
     id: int
     created_at: datetime | None
     updated_at: datetime | None
+    status: str
+
+class VehicleUpdate(BaseModel):
+    status: str
