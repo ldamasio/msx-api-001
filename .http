@@ -1,0 +1,15 @@
+# Criar um veículo
+# POST http://127.0.0.1:8000/vehicles/
+# Content-Type: application/json
+
+# {
+#     "name": "Volkswagen",
+#     "brand": "Golf GTI",
+#     "year": 2023
+# }
+
+# Listar todos os veículos
+GET http://127.0.0.1:8000/vehicles/
+
+# Listar o veículo com ID 10
+# GET http://127.0.0.1:8000/vehicles/10
