@@ -3,10 +3,9 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.db.session import SessionLocal
 from sqlalchemy.orm import Session
-from argon2 import PasswordHasher
+from app.core.security import hash_password, verify_password  # Importando as funções de segurança
 
 client = TestClient(app)
-ph = PasswordHasher()
 
 @pytest.fixture(scope="function")
 def db():
@@ -29,7 +28,7 @@ def test_create_user(db: Session):
     assert user_data["username"] == "testuser"
     
     # Verifica se a senha foi hashada corretamente
-    assert ph.verify(user_data["hashed_password"], "testpass")
+    assert verify_password(user_data["hashed_password"], "testpass")
 
 def test_delete_self(db: Session):
     user_data = create_user(db, "testuser_delete", "testpass")
