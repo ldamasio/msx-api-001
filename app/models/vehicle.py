@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
-from app.db.base_class import Base
+from app.db.base import Base
 
 class Vehicle(Base):
     __tablename__ = "vehicles"
@@ -9,5 +9,7 @@ class Vehicle(Base):
     name = Column(String, index=True, nullable=False)
     brand = Column(String, index=True, nullable=False)
     year = Column(Integer, nullable=False)
+
+    # Campos gerenciados pelo banco de dados
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
