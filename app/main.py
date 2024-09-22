@@ -12,7 +12,7 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
-Configurações CORS (Cross-Origin Resource Sharing)
+# Configurações CORS (Cross-Origin Resource Sharing)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Em produção, defina domínios específicos

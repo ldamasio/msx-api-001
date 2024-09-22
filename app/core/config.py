@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "API MSX Veículos"
     API_V1_STR: str = "/api/v1"
     DATABASE_URL: str = os.getenv('DATABASE_URL')
-    SECRET_KEY: str = os.getenv('SECRET_KEY')
-    ALGORITHM: str = os.getenv('ALGORITHM')
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
+    JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY')
+    JWT_ALGORITHM: str = os.getenv('JWT_ALGORITHM')
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv('JWT_ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 settings = Settings()
