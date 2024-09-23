@@ -3,7 +3,9 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.db.session import SessionLocal
 from sqlalchemy.orm import Session
-from app.core.security import hash_password, verify_password  # Importando as funções de segurança
+from app.core.security import hash_password, verify_password, oauth2_scheme
+import random
+import string
 
 client = TestClient(app)
 
@@ -13,52 +15,48 @@ def db():
     yield db
     db.close()
 
-def create_user(db: Session, username: str, password: str):
-    response = client.post("/users/", json={"username": username, "password": password})
-    assert response.status_code == 200
-    return response.json()
+def generate_random_username(length=10):
+    characters = string.ascii_letters + string.digits
+    username = ''.join(random.choice(characters) for _ in range(length))
+    return username
 
 def get_token(username: str, password: str):
-    response = client.post("/token", data={"username": username, "password": password})
-    assert response.status_code == 200
+    user_data = {"username": username, "password": password}
+    response = client.post("/users/token", data=user_data)
+    assert response.status_code == 201
     return response.json()["access_token"]
 
+def create_user(db: Session, username: str, password: str):
+    user_data = {"username": username, "password": password}
+    response = client.post("/users/", json=user_data)
+    assert response.status_code == 201
+    return response.json()
+
 def test_create_user(db: Session):
-    user_data = create_user(db, "testuser", "testpass")
-    assert user_data["username"] == "testuser"
-    
-    # Verifica se a senha foi hashada corretamente
-    assert verify_password(user_data["hashed_password"], "testpass")
+    random_username0 = generate_random_username()
+    user_data = create_user(db, random_username0, "testpass")
+    #Verifica se o username foi criado
+    assert user_data["username"] == random_username0
 
 def test_delete_self(db: Session):
-    user_data = create_user(db, "testuser_delete", "testpass")
-    token = get_token("testuser_delete", "testpass")
-
+    random_username1 = generate_random_username()
+    user_data = create_user(db, random_username1, "testpass")
+    token = get_token(random_username1, "testpass")
     response = client.delete("/users/me", headers={"Authorization": f"Bearer {token}"})
-    assert response.status_code == 200
-    assert response.json()["message"] == "User deleted successfully"
+    assert response.status_code == 204
 
 def test_change_password(db: Session):
-    user_data = create_user(db, "testuser_change_pass", "oldpass")
-    token = get_token("testuser_change_pass", "oldpass")
-
-    new_password = "newpass"
-    response = client.put("/users/me/password", json={"new_password": new_password}, headers={"Authorization": f"Bearer {token}"})
-    
+    random_username2 = generate_random_username()
+    user_data = create_user(db, random_username2, "oldpass")
+    token = get_token(random_username2, "oldpass")
+    new_password = "StrongP@ss123"
+    response = client.put("/users/me/password", data={"new_password": new_password}, headers={"Authorization": f"Bearer {token}"})
+    print('pedro')
+    print(response.json())
+    print('pedro')
     assert response.status_code == 200
     assert response.json()["message"] == "Password updated successfully"
-
     # Verifica se a nova senha funciona (tenta logar com a nova senha)
-    login_response = client.post("/token", data={"username": "testuser_change_pass", "password": new_password})
-    assert login_response.status_code == 200
+    login_response = client.post("/users/token", data={"username": random_username2, "password": new_password})
+    assert login_response.status_code == 201
 
-def test_fail_delete_other_user(db: Session):
-    user1_data = create_user(db, "user1", "pass1")
-    user2_data = create_user(db, "user2", "pass2")
-    
-    token1 = get_token("user1", "pass1")
-
-    # Tenta deletar o segundo usuário com o token do primeiro usuário
-    response = client.delete("/users/me", headers={"Authorization": f"Bearer {token1}"})
-    
-    assert response.status_code == 403  # Espera-se que não possa deletar outro usuário

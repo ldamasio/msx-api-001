@@ -3,12 +3,17 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.vehicle import Vehicle
 from app.schemas.vehicle import VehicleCreate, VehicleRead, VehicleUpdate
+from app.core.security import get_current_user
 
 router = APIRouter()
 
 # Rota para criar um novo veículo
 @router.post("/", response_model=VehicleRead, status_code=201)
-def create_vehicle(vehicle: VehicleCreate, db: Session = Depends(get_db)):
+def create_vehicle(
+    vehicle: VehicleCreate, 
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+    ):
     """
     Cria um novo veículo.
 
@@ -27,11 +32,13 @@ def create_vehicle(vehicle: VehicleCreate, db: Session = Depends(get_db)):
 # Rota para listar todos os veículos com paginação
 @router.get("/", response_model=list[VehicleRead])
 def get_vehicles(
-    db: Session = Depends(get_db), page: int = Query(default=1, 
+    db: Session = Depends(get_db), 
+        page: int = Query(default=1, 
         description="Page number"),
     size: int = Query(default=50, 
         maximum=50, 
-        description="Number of vehicles per page")
+        description="Number of vehicles per page"),
+    current_user: str = Depends(get_current_user)
     ):
     """
     Lista os veículos.
@@ -50,7 +57,11 @@ def get_vehicles(
 
 # Rota para buscar um veículo por ID
 @router.get("/{vehicle_id}", response_model=VehicleRead)
-def read_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+def read_vehicle(
+    vehicle_id: int, 
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+    ):
     """
     Lista os detalhes de um veículo particular.
 
@@ -75,7 +86,9 @@ def read_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
 @router.put("/{vehicle_id}")
 def update_vehicle_status(vehicle_id: int, 
     vehicle_update: VehicleUpdate, 
-    db: Session = Depends(get_db)):
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+    ):
     """
     Atualiza o status de um veículo particular.
 
@@ -97,7 +110,7 @@ def update_vehicle_status(vehicle_id: int,
 
     if vehicle_update.status == "CONECTADO":
         vehicle.connected = True
-    elif vehicle_update.status == "DESCONECTADO":  # Corrigido o status aqui também
+    elif vehicle_update.status == "DESCONECTADO":
         vehicle.connected = False
     else:
         raise HTTPException(status_code=400, detail="Invalid status")
@@ -106,7 +119,10 @@ def update_vehicle_status(vehicle_id: int,
     return {"message": "Vehicle status updated successfully", "connected": vehicle.connected}
 
 @router.delete("/{vehicle_id}")
-def delete_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+def delete_vehicle(vehicle_id: int, 
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+    ):
     vehicle = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
     if not vehicle:
         raise HTTPException(status_code=404, detail="Vehicle not found")

@@ -1,4 +1,20 @@
-# Criar um veículo
+# Criar um usuário
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+    "username": "usuario_teste33",
+    "password": "senha_teste"
+}
+
+### Obter token de acesso
+# POST http://127.0.0.1:8000/users/token
+# Content-Type: application/x-www-form-urlencoded
+
+# username=usuario_teste33&password=senha_teste
+
+
+# # Criar um veículo
 # POST http://127.0.0.1:8000/vehicles/
 # Content-Type: application/json
 
@@ -8,8 +24,16 @@
 #     "year": 2023
 # }
 
-# Listar todos os veículos
-GET http://127.0.0.1:8000/vehicles/
+# # Listar todos os veículos
+# GET http://127.0.0.1:8000/vehicles/
 
-# Listar o veículo com ID 10
+# # Listar o veículo com ID 10
 # GET http://127.0.0.1:8000/vehicles/10
+
+# Atualizar o status do veículo com ID 10
+# PUT http://127.0.0.1:8000/vehicles/855
+# Content-Type: application/json
+
+# {
+#     "status": "CONECTADO"
+# }
