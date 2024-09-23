@@ -89,17 +89,28 @@ def test_vehicles_pagination(authenticated_client, db):
 
 # Testa a atualização do status de um veículo
 def test_update_vehicle_status(authenticated_client, db):
+    # Cria um veículo para testar a sua edição de status
     vehicle_id = create_vehicle(authenticated_client, db, "Hyundai HB20", "Hyundai", 2023)
+    # Testa a atualização para status "CONECTADO"
     response = authenticated_client.put(f"/vehicles/{vehicle_id}", json={"status": "CONECTADO"})
     assert response.status_code == 200
     data = response.json()
     assert data["message"] == "Vehicle status updated successfully"
-    assert data["status"] == "CONECTADO"
+    # Verifica se o status foi atualizado corretamente
+    vehicle_response = authenticated_client.get(f"/vehicles/{vehicle_id}")
+    assert vehicle_response.status_code == 200
+    vehicle_data = vehicle_response.json()
+    assert vehicle_data["status"] == "CONECTADO"
     response = authenticated_client.put(f"/vehicles/{vehicle_id}", json={"status": "DESCONECTADO"})
+    # Testa a atualização para status "DESCONECTADO"
     assert response.status_code == 200
     data = response.json()
     assert data["message"] == "Vehicle status updated successfully"
-    assert data["status"] == "DESCONECTADO"
+    # Verifica se o status foi atualizado corretamente
+    vehicle_response = authenticated_client.get(f"/vehicles/{vehicle_id}")
+    assert vehicle_response.status_code == 200
+    vehicle_data = vehicle_response.json()
+    assert vehicle_data["status"] == "DESCONECTADO"
 
 def test_delete_vehicle(authenticated_client, db):
     vehicle_id = create_vehicle(authenticated_client, db, "Hyundai HB20", "Hyundai", 2023)

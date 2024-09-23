@@ -21,6 +21,12 @@ Por fim, rode o servidor web em ambiente de desenvolvimento para testar:
 
 `fastapi dev app/main.py`
 
+Se você receber uma mensagem de erro afirmando que o módulo "app" não existe, talvez seja um problema de PYTHONPATH.
+Para resolver esse problema em ambientes bash, rode o script pythonpath.sh na raíz do projeto:
+
+`bash pythonpath.sh`
+
+
 # Documentação
 
 Abra seu navegador e acesse o endereço http://127.0.0.1:8000/docs. Você verá a interface interativa do Swagger UI, onde poderá explorar a documentação da API.

@@ -101,11 +101,10 @@ def update_vehicle_status(vehicle_id: int,
     vehicle = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
     if not vehicle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
-
     if vehicle_update.status == "CONECTADO":
-        vehicle.status = "DESCONECTADO"
-    elif vehicle_update.status == "DESCONECTADO":
         vehicle.status = "CONECTADO"
+    elif vehicle_update.status == "DESCONECTADO":
+        vehicle.status = "DESCONECTADO"
     else:
         raise HTTPException(status_code=400, detail="Invalid status")
     db.commit()

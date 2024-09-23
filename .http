@@ -3,7 +3,7 @@ POST http://127.0.0.1:8000/users/
 Content-Type: application/json
 
 {
-    "username": "usuario_teste33",
+    "username": "usuario_teste3333",
     "password": "senha_teste"
 }
 
@@ -11,7 +11,7 @@ Content-Type: application/json
 # POST http://127.0.0.1:8000/users/token
 # Content-Type: application/x-www-form-urlencoded
 
-# username=usuario_teste33&password=senha_teste
+# username=usuario_teste333&password=senha_teste
 
 
 # # Criar um veículo
@@ -30,9 +30,10 @@ Content-Type: application/json
 # # Listar o veículo com ID 10
 # GET http://127.0.0.1:8000/vehicles/10
 
-# Atualizar o status do veículo com ID 10
+# # Atualizar o status do veículo com ID 10
 # PUT http://127.0.0.1:8000/vehicles/855
 # Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2MiwiZXhwIjoxNzI3MDk3MDE5fQ.sSlB_1PUWl9UoI9Xyc8xXJuWyUATNGo_ZTE63teQhKk
 
 # {
 #     "status": "CONECTADO"

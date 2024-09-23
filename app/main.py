@@ -1,3 +1,10 @@
+import os
+import sys
+# Obtém o diretório do script atual
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Adiciona o caminho à variável de ambiente PYTHONPATH
+sys.path.append(os.path.join(script_dir, '..'))
+
 from app.core.config import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
