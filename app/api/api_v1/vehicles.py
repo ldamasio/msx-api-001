@@ -94,29 +94,22 @@ def update_vehicle_status(vehicle_id: int,
 
     É necessário passar o parâmetro id pelo método PUT do protocolo HTTP.
 
-    Serão retornados os seguintes campos do veículo específico:
+    Será retornados a seguinte mensagem:
 
-    - name
-    - brand
-    - year
-    - id
-    - created_at
-    - updated_at
-    - status
+    {"message": "Vehicle status updated successfully"}
     """
     vehicle = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
     if not vehicle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
 
     if vehicle_update.status == "CONECTADO":
-        vehicle.connected = True
+        vehicle.status = "DESCONECTADO"
     elif vehicle_update.status == "DESCONECTADO":
-        vehicle.connected = False
+        vehicle.status = "CONECTADO"
     else:
         raise HTTPException(status_code=400, detail="Invalid status")
-
     db.commit()
-    return {"message": "Vehicle status updated successfully", "connected": vehicle.connected}
+    return {"message": "Vehicle status updated successfully"}
 
 @router.delete("/{vehicle_id}")
 def delete_vehicle(vehicle_id: int, 

@@ -94,12 +94,12 @@ def test_update_vehicle_status(authenticated_client, db):
     assert response.status_code == 200
     data = response.json()
     assert data["message"] == "Vehicle status updated successfully"
-    assert data["connected"] is True
+    assert data["status"] == "CONECTADO"
     response = authenticated_client.put(f"/vehicles/{vehicle_id}", json={"status": "DESCONECTADO"})
     assert response.status_code == 200
     data = response.json()
     assert data["message"] == "Vehicle status updated successfully"
-    assert data["connected"] is False
+    assert data["status"] == "DESCONECTADO"
 
 def test_delete_vehicle(authenticated_client, db):
     vehicle_id = create_vehicle(authenticated_client, db, "Hyundai HB20", "Hyundai", 2023)
