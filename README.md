@@ -27,19 +27,6 @@ Para resolver esse problema em ambientes bash, rode o script pythonpath.sh na ra
 `bash pythonpath.sh`
 
 
-# Documentação
-
-Abra seu navegador e acesse o endereço http://127.0.0.1:8000/docs. Você verá a interface interativa do Swagger UI, onde poderá explorar a documentação da API.
-
-
-# Testes
-
-Os testes automatizados podem ser executados com o pytest, usando o seguinte comando:
-
-`pytest`
-
-Se você utiliza o vscode, uma forma alternativa de testar as rotas é executando a extensão REST Cli enviando requisições com através do arquivo .http
-
 # Rotas
 
 POST - /vehicles - Cria um novo veículo. A criação requer os campos seguintes: name, brand, year. Retornando com status 201 os seguintes campos: name, brand, year, id, created_at, updated_at.
@@ -48,6 +35,24 @@ GET - Lista os veículos. A listagem obedece uma regra de paginação de no máx
 
 GET - /vehicles/{id} - Lista os detalhes de um veículo particular. É necessário passar o parâmetro id pelo método GET do protocolo HTTP. Serão retornados com status 200 os seguintes campos do veículo específico: name, brand, year, id, created_at, updated_at.
 
+# Documentação
+
+Abra seu navegador e acesse o endereço http://127.0.0.1:8000/docs. Você verá a interface interativa do Swagger UI, onde poderá explorar a documentação da API.
+
+
+# Testes
+
+### Testes Automatizados
+
+Os testes automatizados podem ser executados com o pytest, usando o seguinte comando:
+
+`pytest`
+
+### Testes manuais
+
+A API também pode ser testada usando clientes especializados, como Postman e Insomnia.
+
+Se você utiliza o vscode, uma forma alternativa de testar as rotas é executando a extensão REST Cli enviando requisições com através da manipulação do arquivo .http
 
 # Pontos de Melhoria
 
